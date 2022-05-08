@@ -10,7 +10,7 @@ def simulation(game, empty_symbol):
     Replays the current state of the game certain amount of times using random picks
     Returns the turn with highest probability to win
     """
-    repeat_simulation = 20000
+    repeat_simulation = 5000
     choices_data = create_initial_data(game, empty_symbol)
     choices = create_choices(game)
 

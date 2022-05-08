@@ -6,7 +6,7 @@ from monte_carlo_simulation import simulation
 def start_game():
     """
     Starts a game of Tic Tac Toe.
-    The player is playing with X while the AI playing with 0.The AI uses monte carlo simulation to predict his moves
+    The player is playing with X while the AI is playing with 0.The AI uses monte carlo simulation to predict his moves.
     """
 
     players = ['X', '0']
