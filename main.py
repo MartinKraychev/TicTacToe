@@ -1,42 +1,54 @@
 from functions import create_matrix_from_console, calculate_empty_slots, player_turn, check_winning_combinations, \
-    print_game
+    show_game
+from monte_carlo_simulation import simulation
 
-players = [{'id': '1',
-            'sign': 'X'},
 
-           {'id': '2',
-            'sign': '0'}]
+def start_game():
+    """
+    Starts a game of Tic Tac Toe.
+    The player is playing with X while the AI playing with 0.The AI uses monte carlo simulation to predict his moves
+    """
 
-winner = None
-empty_symbol = '-'
+    players = ['X', '0']
 
-game = create_matrix_from_console(empty_symbol)
-empty_slots = calculate_empty_slots(game)
+    winner = None
+    empty_symbol = '-'
 
-while empty_slots:
+    game = create_matrix_from_console(empty_symbol)
+    empty_slots = calculate_empty_slots(game)
 
-    current_player = players[0]
-    row, col = player_turn(current_player, len(game))
+    while empty_slots:
 
-    if game[row][col] == empty_symbol:
-        game[row][col] = current_player['sign']
+        current_player = players[0]
+        if current_player == '0':
+            # AI turn to pick
+            row, col = simulation(game, empty_symbol)
+        else:
+            # real player turn to pick
+            row, col = player_turn(current_player, len(game))
 
-        # swap the players after successful turn
-        players.reverse()
+        if game[row][col] == empty_symbol:
+            game[row][col] = current_player
 
-        # recalculate empty slots after each successful turn
-        empty_slots = calculate_empty_slots(game)
+            # swap the players after successful turn
+            players.reverse()
 
-        print(print_game(game))
+            # recalculate empty slots after each successful turn
+            empty_slots = calculate_empty_slots(game)
 
-        game_finished, winner = check_winning_combinations(game, players, empty_symbol)
+            print(show_game(game))
 
-        if game_finished:
-            print(f'The winner is Player {winner["id"]}')
-            break
+            game_finished, winner = check_winning_combinations(game, empty_symbol)
 
-    else:
-        print('This slot is already taken, try again.')
+            if game_finished:
+                print(f'The winner is Player {winner}')
+                break
 
-if not winner:
-    print('The game finished and it is a draw!')
+        else:
+            print('This slot is already taken, try again.')
+
+    if not winner:
+        print('The game finished and it is a draw!')
+
+
+start_game()

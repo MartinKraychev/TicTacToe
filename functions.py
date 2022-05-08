@@ -1,6 +1,9 @@
 def create_matrix_from_console(empty_symbol):
+    """
+    Create the initial state of the game depending on user input
+    """
     collection = []
-    row = int(input('Enter the size of the TicTacToe: '))
+    row = ensure_int_value_from_console('Enter the size of the TicTacToe: ')
 
     for r in range(row):
         line = list(row * empty_symbol)
@@ -9,7 +12,10 @@ def create_matrix_from_console(empty_symbol):
     return collection
 
 
-def print_game(game):
+def show_game(game):
+    """
+    returns the current state of the game
+    """
     result = ''
 
     for row in range(len(game)):
@@ -22,23 +28,41 @@ def print_game(game):
 
 
 def player_turn(player, max_size):
-    turn_x = int(input(f'Player {player["id"]}, select your row: '))
-    turn_y = int(input(f'Player {player["id"]}, select your column: '))
+    """
+    Receives, check and returns the coordinates the player picks
+    """
+    turn_x = ensure_int_value_from_console(f'Player {player}, select your row: ')
+    turn_y = ensure_int_value_from_console(f'Player {player}, select your column: ')
 
-    if turn_x not in range(0, max_size) or turn_y not in range(0, max_size):
-        print('Out of range of the game limits, try again')
-        return player_turn(player, max_size)
+    if 0 <= turn_x < max_size and 0 <= turn_y < max_size:
+        return turn_x, turn_y
 
-    return turn_x, turn_y
+    print('Out of range of the game limits, try again')
+    return player_turn(player, max_size)
 
 
 def calculate_empty_slots(game):
+    """
+    Returns the count of empty slots in the game
+    """
     return sum([game[r].count('-') for r in range(len(game))])
 
 
-def check_winning_combinations(game, players, empty_symbol):
-    winning_combinations = []
+def check_winning_combinations(game, empty_symbol):
+    """
+    Collects all the possible winning combinations and checks if there is a valid one
+    """
 
+    def get_columns_combinations(data):
+        return list(map(list, zip(*data)))
+
+    def get_primary_diagonal_combination(data):
+        return [[data[ind][ind] for ind in range(len(data))]]
+
+    def get_secondary_diagonal_combination(data):
+        return [[data[i][len(game) - i - 1] for i in range(len(data))]]
+
+    winning_combinations = []
     # adds the rows
     winning_combinations.extend(game)
     # adds the columns
@@ -49,22 +73,27 @@ def check_winning_combinations(game, players, empty_symbol):
 
     for combination in winning_combinations:
         if empty_symbol not in combination:
-            if len(set(combination)) == 1:
-                winning_symbol = set(combination).pop()
-                winning_player = [player for player in players if player['sign'] == winning_symbol][0]
+            combi_set = set(combination)
+            if len(combi_set) == 1:
+                winning_symbol = combi_set.pop()
+                winning_player = winning_symbol
 
                 return True, winning_player
 
     return False, None
 
 
-def get_columns_combinations(game):
-    return list(map(list, zip(*game)))
+def ensure_int_value_from_console(message):
+    """
+    ensures that the player gives valid value
+    """
+    result = input(message)
+    try:
+        value = int(result)
+    except ValueError:
+        print('Please use integer value')
+        return ensure_int_value_from_console(message)
+
+    return value
 
 
-def get_primary_diagonal_combination(game):
-    return [[game[ind][ind] for ind in range(len(game))]]
-
-
-def get_secondary_diagonal_combination(game):
-    return [[game[i][len(game) - i - 1] for i in range(len(game))]]
