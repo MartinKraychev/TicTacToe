@@ -1,3 +1,6 @@
+from functions import show_game
+
+
 def create_initial_data(game, empty_symbol):
     """
    creates a data structure containing 0's and N's
@@ -40,6 +43,6 @@ def get_ai_best_choice(data):
                     data_best_choice_row = row
                     data_best_choice_col = col
                     print(f'The AI player 0 chooses {data_best_choice_row} row and {data_best_choice_col} col')
-                    print(data)
+                    print(show_game(data))
                     return data_best_choice_row, data_best_choice_col
 

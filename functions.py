@@ -21,7 +21,7 @@ def show_game(game):
     for row in range(len(game)):
 
         for col in range(len(game[row])):
-            result += game[row][col] + ' '
+            result += str(game[row][col]) + ' '
         result += f'\n'
 
     return result
@@ -78,9 +78,9 @@ def check_winning_combinations(game, empty_symbol):
                 winning_symbol = combi_set.pop()
                 winning_player = winning_symbol
 
-                return True, winning_player
+                return winning_player
 
-    return False, None
+    return None
 
 
 def ensure_int_value_from_console(message):
@@ -95,5 +95,3 @@ def ensure_int_value_from_console(message):
         return ensure_int_value_from_console(message)
 
     return value
-
-

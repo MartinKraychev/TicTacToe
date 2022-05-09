@@ -38,9 +38,9 @@ def start_game():
 
             print(show_game(game))
 
-            game_finished, winner = check_winning_combinations(game, empty_symbol)
+            winner = check_winning_combinations(game, empty_symbol)
 
-            if game_finished:
+            if winner:
                 print(f'The winner is Player {winner}')
                 break
 

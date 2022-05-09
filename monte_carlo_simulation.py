@@ -1,7 +1,7 @@
 import copy
 import random
 
-from functions import check_winning_combinations, show_game
+from functions import check_winning_combinations
 from monte_carlo_functions import create_initial_data, create_choices, get_ai_best_choice
 
 
@@ -32,9 +32,9 @@ def simulation(game, empty_symbol):
             choices_copy.remove(turn)
             players.reverse()
 
-            game_finished, winner = check_winning_combinations(game_copy, empty_symbol)
+            winner = check_winning_combinations(game_copy, empty_symbol)
 
-            if game_finished:
+            if winner:
                 first_turn = all_turns[0]
                 data_row = first_turn[0]
                 data_col = first_turn[1]
