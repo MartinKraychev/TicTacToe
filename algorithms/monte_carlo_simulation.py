@@ -1,8 +1,8 @@
 import copy
 import random
 
-from functions import check_winning_combinations
-from monte_carlo_functions import create_initial_data, create_choices, get_ai_best_choice
+from functions.main_functions import check_winning_combinations
+from functions.monte_carlo_functions import create_initial_data, create_choices, get_ai_best_choice
 
 
 def simulation(game, empty_symbol):

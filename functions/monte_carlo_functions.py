@@ -1,4 +1,4 @@
-from functions import show_game
+from functions.main_functions import show_game
 
 
 def create_initial_data(game, empty_symbol):

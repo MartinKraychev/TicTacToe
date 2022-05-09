@@ -1,6 +1,8 @@
-from functions import create_matrix_from_console, calculate_empty_slots, player_turn, check_winning_combinations, \
+from algorithms.mini_mix_algorithm import scan_game
+from functions.main_functions import create_matrix_from_console, calculate_empty_slots, player_turn, \
+    check_winning_combinations, \
     show_game
-from monte_carlo_simulation import simulation
+from algorithms.monte_carlo_simulation import simulation
 
 
 def start_game():
@@ -22,7 +24,13 @@ def start_game():
         current_player = players[0]
         if current_player == '0':
             # AI turn to pick
-            row, col = simulation(game, empty_symbol)
+
+            # monte carlo simulation below
+            # row, col = simulation(game, empty_symbol)
+
+            #  minimax algorithm below
+            row, col = scan_game(game)
+
         else:
             # real player turn to pick
             row, col = player_turn(current_player, len(game))
