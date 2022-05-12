@@ -3,6 +3,7 @@ import json
 
 from functions.main_functions import calculate_empty_slots
 from functions.mini_max_functions import calculate_score
+import operator
 
 player = 'X'
 opponent = '0'
@@ -49,38 +50,28 @@ def minimax(game, depth, is_maximising):
     if calculate_empty_slots(game) == 0:
         return 0
 
-    if is_maximising:
-        best_value = -1
+    best_value = -1 if is_maximising else 1
+    next_to_play = opponent if is_maximising else player
+    comperator = operator.gt if is_maximising else operator.lt
+    next_max_or_min = False if is_maximising else True
+    current_state = None
 
-        for row in range(len(game)):
-            for col in range(len(game[row])):
-                if game[row][col] == '-':
-                    game_copy = copy.deepcopy(game)
+    for row in range(len(game)):
+        for col in range(len(game[row])):
+            if game[row][col] == '-':
+                game_copy = copy.deepcopy(game)
+                if is_maximising:
                     current_state = json.dumps(game_copy)
                     # Keeps all the states of the game in a cache
                     if current_state not in CACHE:
                         CACHE[current_state] = 0
-                    game_copy[row][col] = opponent
+                game_copy[row][col] = next_to_play
 
-                    score = minimax(game_copy, depth + 1, False)
-                    if score > best_value:
-                        # if the score is bigger, replaces the value of the state
+                score = minimax(game_copy, depth + 1, next_max_or_min)
+                if comperator(score, best_value):
+                    # if the score is bigger, replaces the value of the state
+                    if is_maximising:
                         CACHE[current_state] = (row, col)
-                        best_value = score
+                    best_value = score
 
-        return best_value
-
-    else:
-        best_value = 1
-
-        for row in range(len(game)):
-            for col in range(len(game[row])):
-                if game[row][col] == '-':
-                    game_copy = copy.deepcopy(game)
-                    game_copy[row][col] = player
-                    score = minimax(game_copy, depth + 1, True)
-
-                    if score < best_value:
-                        best_value = score
-
-        return best_value
+    return best_value
